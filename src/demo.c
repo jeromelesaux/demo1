@@ -6,16 +6,18 @@
 
 #include "FILE.C"
 
-#define PLANETE1NAME "PLAN1.BIN"
-#define PLANETE2NAME "PLAN2.BIN"
-#define PLANETE3NAME "PLAN3.BIN"
-#define PLANETE4NAME "PLAN4.BIN"
+#define HYPTO1NAME "HYPTO1.BIN"
+#define HYPTO2NAME "HYPTO2.BIN"
+#define HYPTO3NAME "HYPTO3.BIN"
+#define HYPTO4NAME "HYPTO4.BIN"
 
 static char readBuffer [ 16336 ];
 
 main() {
 	initamsdos();
-	openfile(PLANETE1NAME);
+	openfile(HYPTO1NAME);
+	while(1) {}
+
 }
 
 openfile(filename) 
@@ -23,7 +25,7 @@ openfile(filename)
 {
 	char *screenPtr;
 	screenPtr = 0xC000;
-	if ( openread( PLANETE1NAME, readBuffer ) == 0 ) {
+	if ( openread( filename, readBuffer ) == 0 ) {
 		return;
 	}
 	while ( iseof() == 0 ) {
