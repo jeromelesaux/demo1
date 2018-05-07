@@ -21,7 +21,8 @@ openfile:
   ld de,#c000 ; buffer
   call #bc77
   ld hl,#c000 ; adresse de dzbut du fichier
-  call #bc83
+  call #bc83 ; read all content in memory
+  call #bc7a ; close file 
 
 main: 
   call initamsdos
