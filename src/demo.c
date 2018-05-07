@@ -5,17 +5,19 @@
  */
 
 #include "FILE.C"
+#include "PRINT.C"
 
-#define HYPTO1NAME "HYPTO1.BIN"
+#define HYPTO1NAME "HYPTO1.SCR"
 #define HYPTO2NAME "HYPTO2.BIN"
 #define HYPTO3NAME "HYPTO3.BIN"
 #define HYPTO4NAME "HYPTO4.BIN"
 
-static char readBuffer [ 16336 ];
+static char readBuffer [ 2048 ];
 
 main() {
 	initamsdos();
 	openfile(HYPTO1NAME);
+        printstrln("file loaded.");
 	while(1) {}
 
 }
@@ -29,7 +31,7 @@ openfile(filename)
 		return;
 	}
 	while ( iseof() == 0 ) {
-		screenPtr = getbinary();
+		*screenPtr = getchar();
 		screenPtr++;
 	}
 	closeread();
