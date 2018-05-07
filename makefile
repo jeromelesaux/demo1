@@ -21,8 +21,8 @@ checkc:
 package:
 	$(PKG) demo_src.dsk -n
 	@$(foreach b,$(SCR), $(PKG) demo_src.dsk -i $(b) -t 1;)
-	@$(foreach c,$(CSRC), $(PKG) demo_src.dsk -i $(c) -t 0 -e C0000 -c 4000;)
-	$(PKG) demo_src.dsk -i src/demo.c -t 0 -e C0000 -c 4000
+	#@$(foreach c,$(CSRC), $(PKG) demo_src.dsk -i $(c) -t 0 -e C0000 -c 4000;)
+	$(PKG) demo_src.dsk -i src/demo.asm -t 0 -e C0000 -c 4000
 
 emulator:
 	javacpc "$(PWD)/demo_src.dsk"
