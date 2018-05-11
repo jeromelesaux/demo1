@@ -3,7 +3,7 @@ DIR := $(shell echo */ | tr -d 'src/' )
 CSRC := $(shell find $(PHROZEN_PATH) -iname '*.c' | grep -v EXAMPLE )
 BIN := $(shell find . -print | grep bin)
 ASM := $(shell find ./src/ -print | grep .asm)
-SCR := $(shell find . -print | grep .scr)
+SCR := $(shell find . -print | grep "\.scr")
 PKG=iDSK
 default: 
 	@$(foreach m,$(DIR), make -f  $(m)/makefile;)
