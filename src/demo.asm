@@ -123,8 +123,9 @@ main:
   out (c),c
   ei
  
-  call waitkey
+ ; call waitkey
   di
+  ld a,1
 loopanim: 
   ld bc,#7fc4
   out (c),c ; ram_4 in 4000-7fff
@@ -138,6 +139,9 @@ loopanim:
   ld bc,#7fc7
   out (c),c ; ram_7 in 4000-7fff
   call cpyscreen
+  inc a
+  cp 30
+  ret z
   jp loopanim
   ei
 
