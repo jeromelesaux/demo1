@@ -52,7 +52,20 @@ Switch64k:
  ei
  ret   
 
-
+; set color and mode screen
+setcolors:
+ld a,0
+call #bc0e ; set mode 0 
+ld a,0
+lb b,1
+call #bc32
+ld a,13
+lb b,2
+call #bc32
+ld a,26
+lb b,3
+call #bc32
+ret
 
 ;--------------------------------------------
 initamsdos: ; initialisation de la rom 7 (usage du disque)
@@ -141,7 +154,7 @@ loopanim:
   call cpyscreen
   inc a
   cp 30
-  ret z
+  ret z ; loop ended, will return 
   jp loopanim
   ei
 

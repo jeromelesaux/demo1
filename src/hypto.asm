@@ -1,6 +1,6 @@
   org #a000
   nolist
-	write "demo"
+	write "hypto"
 	jp main ; main function 
 
 
@@ -52,7 +52,19 @@ Switch64k:
  ei
  ret   
 
-
+; set color and mode screen
+setcolors:
+ld a,0
+call #bc0e ; set mode 0 
+ld a,0
+ld b,1
+call #bc32
+ld a,13
+ld b,2
+call #bc32
+ld b,0
+call #bc38
+ret
 
 ;--------------------------------------------
 initamsdos: ; initialisation de la rom 7 (usage du disque)
@@ -85,6 +97,7 @@ cpyscreen: ; copy 4000-7fff to C000-ffff
 
 main: 
   call initamsdos
+  call setcolors
 
   di
   ; load and store file hypto1 in bank 1
