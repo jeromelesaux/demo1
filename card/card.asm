@@ -1,51 +1,13 @@
-  org #4000
-  nolist
-  write "card"
-  jp main ; main function 
-
-
-main: 
-  ld a, 0
-  call #bc0e ; set mode 0 
-  
-  ld hl,cardsprite ; adresse source du fichier charge .win
-  ld de,#c000 ; adresse destination (ou l'on veut afficher l'image sur l'ecran)
-  ld b,100 ; l'image contient x lignes de hauteur
-  call loowin
-  call waitkey
-  ret
-
-loowin:
-  push bc ; on sauve le nombre de lignes
-  push de ; et l'adresse ecran de depart
-  ld bc,19 ; largeur de l'image
-  ldir               ; on copie tout
-  pop de          ; on recupere l'adresse ecran (1ere ligne) afin de calculer la prochaine adresse ecran
-  call mybc26   ; on calcule la ligne suivante
-  pop bc          ; on recupere le nombre de lignes sauves plus haut
-  djnz loowin   ; on reboucle tant que le nombre de ligne <>0
-  ret
 ;
-mybc26:
-  ld a,d       ; on recupere le poids fort du registre d
-  add a,8     
-  ld d,a       ; on remet la bonne valeur a d
-  ret nc       ; on s'arrete ici si pas de depassement (a>#ff)
-  ex hl,de   ; on inverse le contenu des registres HL et De
-  ld bc,#c050 ; prochaine ligne si ecran de 80 caracteres
-  add hl,bc     ; on a ici la prochaine ligne apres calcul
-  ex hl,de    ; on remets les valeurs de registres HL et DE a leur place
-  ret
-
-waitkey: 
-  call #bb06
-  ld h,0
-  ld l,a
-  ret 
-
-
-cardsprite: ; original file ../card.win 
- DB      #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+;
+;Généré par ConvImgCpc Version 0.16
+;
+; 'Z:\home\jlesaux\workspace\demo1\card.asm'
+; Mode 0
+; 19x100
+; Linéaire
+;
+        DB      #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
         DB      #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
         DB      #C0, #C0, #80, #40, #00, #00, #00, #00
         DB      #00, #00, #00, #00, #00, #00, #00, #00
