@@ -121,7 +121,7 @@ Offset	di
 	or l
 	jr z,init04
 Return1	ld (posit4),sp
-	ld de,offadr
+	ld de,endspr
 	ld b,hauteur
 Loop1	ex de,hl
 PokeLDD	ldd
@@ -159,7 +159,9 @@ main:
  jp rolling
  ret
 
-sprite: DB #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+sprite: 
+ DB #00, #00, #00, #00, #00, #00, #00, #00
+ DB #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #80, #40, #00, #00, #00, #00
  DB #00, #00, #00, #00, #00, #00, #00, #00
@@ -397,7 +399,7 @@ sprite: DB #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #00, #00, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #80, #C0
-
+endspr
 
 TableX: DB 15,15,15,15,15,15,15,15
  DB 16,16,16,16,16,16,16,16
