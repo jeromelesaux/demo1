@@ -32,8 +32,9 @@ anim:
 
 poker:
 	$(PKG) card_src.dsk -n
-	$(PKG) card_src.dsk -i harley/card.win -t 1 -e 4000 -c 4000
-	$(PKG) card_src.dsk -i harley/card.scr -t 1 -e c000 -c 4000
+	$(PKG) card_src.dsk -i src/card.asm -t 0
+	$(PKG) card_src.dsk -i card/card.win -t 1 -e 4000 -c 4000
+	$(PKG) card_src.dsk -i card/card.scr -t 1 -e c000 -c 4000
 	javacpc "$(PWD)/card_src.dsk"
 
 end:

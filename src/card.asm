@@ -11,10 +11,11 @@ Hauteur         Equ 100          ; Hauteur
 Taille          Equ largeur*hauteur ; 19*100 = 1900 (#76C)
 
 
+
 ;
 ; Initialisation
 ;
-rolling:
+rolling
 ; Pokage des LDD
   ld hl,(offadr)
   ld hl,sprite+taille-1
@@ -76,7 +77,7 @@ Synchro	in a,(c)
 	call offset
 
 ; Test clavier
-waitkey:
+waitkey
 	di
 	ld bc, #f40e
 	out (c),c
@@ -153,13 +154,25 @@ Posit4	dw 0
 Start	dw 0
 Pile	dw 0
 
-main: 
+main 
  ld a, 0
  call #bc0e ; set mode 0 
+; set color and mode screen
+ld hl,palette
+ld b,1
+loopcolors ld a,(hl)
+call #bc32
+inc hl
+inc b
+cp 255
+jp nz,loopcolors
  jp rolling
  ret
 
-sprite: 
+palette DB 26, 0, 10, 13, 6, 3, 12, 24, 16, 25, 0, 0, 0, 0, 0, 255
+
+
+sprite 
  DB #00, #00, #00, #00, #00, #00, #00, #00
  DB #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
@@ -401,7 +414,7 @@ sprite:
  DB #C0, #C0, #C0, #80, #C0
 endspr
 
-TableX: DB 15,15,15,15,15,15,15,15
+TableX DB 15,15,15,15,15,15,15,15
  DB 16,16,16,16,16,16,16,16
  DB 16,16,16,16,16,16,15,15
  DB 15,15,15,15,15,15,15,15
@@ -448,7 +461,7 @@ TableX: DB 15,15,15,15,15,15,15,15
  DB 14,14,14,14,15,15,15,15
  DB 255 
 
-TableY: DB 160,160,160,160,159,159,158,158
+TableY DB 160,160,160,160,159,159,158,158
  DB 157,156,155,154,153,152,151,149
  DB 148,146,145,143,141,139,138,136
  DB 134,131,129,127,125,122,120,118
