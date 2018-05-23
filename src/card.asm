@@ -155,22 +155,24 @@ Start	dw 0
 Pile	dw 0
 
 main 
- ld a, 0
+ xor a
  call #bc0e ; set mode 0 
-; set color and mode screen
-ld hl,palette
-ld b,1
-loopcolors ld a,(hl)
-call #bc32
-inc hl
-inc b
-cp 255
-jp nz,loopcolors
+ ld bc,0
+ call #bc38  ; set border to black
+; set color palette
+ ld hl,palette
+ xor a ; set 0 in a 
+ loopcolors ld b,(hl)
+ ld c,b
+ call #bc32
+ inc hl
+ inc a
+ cp 8
+ jp z,loopcolors
  jp rolling
- ret
+ret
 
-palette DB 26, 0, 10, 13, 6, 3, 12, 24, 16, 25, 0, 0, 0, 0, 0, 255
-
+palette DB 0,26,9,13,6,3,12,24,25
 
 sprite 
  DB #00, #00, #00, #00, #00, #00, #00, #00
