@@ -159,20 +159,30 @@ main
  call #bc0e ; set mode 0 
  ld bc,0
  call #bc38  ; set border to black
-; set color palette
- ld hl,palette
- xor a ; set 0 in a 
- loopcolors ld b,(hl)
- ld c,b
- call #bc32
- inc hl
- inc a
- cp 8
- jp z,loopcolors
+ jp setpalette
  jp rolling
 ret
 
-palette DB 0,26,9,13,6,3,12,24,25
+
+setpalette
+; set color palette
+ ld hl,palette
+ ld e,0
+ loopcolors ld b,(hl)
+ ld c,b
+ ld a,e
+ push de 
+ push hl 
+ call #bc32
+ pop hl
+ pop de
+ inc hl
+ inc e 
+ bit 4,e
+ ret nz
+ jp loopcolors
+
+palette DB 0,26,9,13,6,3,12,24,25,0,0,0,0,0,0,0
 
 sprite 
  DB #00, #00, #00, #00, #00, #00, #00, #00
