@@ -1,188 +1,186 @@
  org #9000
  nolist
- write "card"
+ ; write "card"
  jp main
 
 
-LargeurEcran    Equ #50
-TableAdr        Equ #8000
-Largeur         Equ 19          ; Largeur
-Hauteur         Equ 100          ; Hauteur
-Taille          Equ largeur*hauteur ; 19*100 = 1900 (#76C)
+LargeurEcran Equ #50
+TableAdr Equ #8000
+Largeur Equ 19 ; Largeur
+Hauteur Equ 100 ; Hauteur
+Taille Equ Largeur*Hauteur ; 19*100 = 1900 (#76C)
 
 
+setpalette ; set color palette
+ ld bc,#00
+ call #bc38 ; set border to black
+ ld a,0
+ call #bc0e ; set mode 0 
+ ld hl,palette ; table des couleurs
+ ld e,0 ; depart pen 0
+loopcol ld b,(hl) ; recupere couleur dans b
+ ld c,b ; c=b donc meme couleur
+ ld a,e ; on se sert du registre compteur e pour gerer le numero d'encre
+ push de:push hl ; on sauvegarde les registres modifie par le vecteur
+ call #bc32 ; Appel du vecteur Systeme SCR_SET_INK
+ pop hl:pop de ; on restitue ces registres
+ inc hl ; prochaine couleur
+ inc e ; 1 couleur de moins
+ bit 4,e ; teste si 16eme couleur
+ ret nz ; on est arrive
+ jr loopcol ; sinon on continue
+
+palette 
+ DB 0,26,9,13
+ DB 6,3,12,24
+ DB 25,0,0,0
+ DB 0,0,0,0
 
 ;
 ; Initialisation
 ;
 rolling
 ; Pokage des LDD
-  ld hl,(offadr)
-  ld hl,sprite+taille-1
+ ld hl,(OffAdr)
+ ld hl,sprite+Taille-1
 
-	ld hl,pokeldd
-	ld de,pokeldd+2
-	ld bc,2*largeur-2
-	ldir
+ ld hl,PokeLDD
+ ld de,PokeLDD+2
+ ld bc,2*Largeur-2
+ ldir
 
 ; G{n{ration de la table d'adresses
 
-	di
-	ld (pile),sp	; (1)
-	ld sp,tableadr
-	ld hl,0
-	push hl
-	ld de,tabley	; (2)
-LoopT40	ld hl,#c000+largeur+10 
- 	ld a,(de)
-	or a
-	jp z,saute
-	cp 255
-	jp z,nextt4
-	ld b,a
-LoopT4	push bc
-	call bc26
-	pop bc
-	djnz loopt4
-Saute	ld a,(tablex)
-	push bc
-	ld c,a
-	ld b,0
-	add hl,bc	; (3)
-	pop bc
-	push hl
-	ld hl,(saute+1)
-	inc hl
-	ld (saute+1),hl
-	inc de
-	jp loopt40
+ di
+ ld (Pile),sp ; (1)
+ ld sp,TableAdr
+ ld hl,0
+ push hl
+ ld de,TableY ; (2)
+LoopT40 ld hl,#c000+Largeur+10 
+ ld a,(de)
+ or a
+ jp z,Saute
+ cp 255
+ jp z,NextT4
+ ld b,a
+LoopT4 push bc
+ call BC26
+ pop bc
+ djnz LoopT4
+Saute ld a,(TableX)
+ push bc
+ ld c,a
+ ld b,0
+ add hl,bc ; (3)
+ pop bc
+ push hl
+ ld hl,(Saute+1)
+ inc hl
+ ld (Saute+1),hl
+ inc de
+ jp LoopT40
 
-NextT4	ld (start),sp
-	ld sp,(pile)
+NextT4 ld (Start),sp
+ ld sp,(Pile)
 
-	ld hl,tablex	; (4)
-	ld (saute+1),hl
-	ld hl,(start)
-	ld (posit4),hl
-	ei
+ ld hl,TableX ; (4)
+ ld (Saute+1),hl
+ ld hl,(Start)
+ ld (Posit4),hl
+ ei
 
 ;
 ; Programme principal
 ;
-Prog	ld b,#f5
-Synchro	in a,(c)
-	rra
-	jr nc,synchro
+Prog ld b,#f5
+Synchro in a,(c)
+ rra
+ jr nc,Synchro
 
-	call offset
+ call Offset
 
 ; Test clavier
-waitkey
-	di
-	ld bc, #f40e
-	out (c),c
-	ld bc, #f6c0
-	out (c),c
-	xor a
-	out (c),a
-	ld bc, #f792
-	out (c),c
-	ld bc, #f645
-	out (c),c
-	ld b, #f4
-	in a,(c)
-	ld bc, #f782
-	out (c),c
-	ld bc, #f600
-	out (c),c
-	ei
+waitkeyh
+ di
+ ld bc, #f40e
+ out (c),c
+ ld bc, #f6c0
+ out (c),c
+ xor a
+ out (c),a
+ ld bc, #f792
+ out (c),c
+ ld bc, #f645
+ out (c),c
+ ld b, #f4
+ in a,(c)
+ ld bc, #f782
+ out (c),c
+ ld bc, #f600
+ out (c),c
+ ei
 
-	rla
-	jp c,prog
+ rla
+ jp c,Prog
 
 ; Exit
 
-	ret
+ ret
 
 ; Affichage du Rolling Sprite
 
-Init04	ld sp,(start)	; (5)
-	pop hl
-	jp return1
+Init04 ld sp,(Start) ; (5)
+ pop hl
+ jp Return1
 
-Init042	ld sp,(start)
-	pop hl
-	jp return2
+Init042 ld sp,(Start)
+ pop hl
+ jp Return2
 
-Offset	di
-	ld (pile),sp
-	ld sp,(posit4)
-	pop hl
-	ld a,h
-	or l
-	jr z,init04
-Return1	ld (posit4),sp
-	ld de,endspr
-	ld b,hauteur
-Loop1	ex de,hl
-PokeLDD	ldd
-	ds 2*largeur-2
-	ex de,hl
-	pop hl
-	ld a,h
-	or l
-	jr z,init042
-Return2	djnz loop1
-	ld sp,(pile)
-	ei
-	ret
+Offset di
+ ld (Pile),sp
+ ld sp,(Posit4)
+ pop hl
+ ld a,h
+ or l
+ jr z,Init04
+Return1 ld (Posit4),sp
+ ld de,endspr
+ ld b,Hauteur
+Loop1 ex de,hl
+PokeLDD ldd
+ ds 2*Largeur-2
+ ex de,hl
+ pop hl
+ ld a,h
+ or l
+ jr z,Init042
+Return2 djnz Loop1
+ ld sp,(Pile)
+ ei
+ ret
 
-BC26	ld a,h
-	add a,8
-	ld h,a
-	ret nc
-	ld bc, #c000+largeurecran
-	add hl,bc
-	ret
+BC26 ld a,h
+ add a,8
+ ld h,a
+ ret nc
+ ld bc, #c000+LargeurEcran
+ add hl,bc
+ ret
 
 ;
 ; Data
 ;
-
 OffAdr dw 0
-Posit4	dw 0
-Start	dw 0
-Pile	dw 0
+Posit4 dw 0
+Start dw 0
+Pile dw 0
 
 main 
- xor a
- call #bc0e ; set mode 0 
- ld bc,0
- call #bc38  ; set border to black
- jp setpalette
+ call setpalette
  jp rolling
 ret
-
-
-setpalette
-; set color palette
- ld hl,palette
- ld e,0
- loopcolors ld b,(hl)
- ld c,b
- ld a,e
- push de 
- push hl 
- call #bc32
- pop hl
- pop de
- inc hl
- inc e 
- bit 4,e
- ret nz
- jp loopcolors
-
-palette DB 0,26,9,13,6,3,12,24,25,0,0,0,0,0,0,0
 
 sprite 
  DB #00, #00, #00, #00, #00, #00, #00, #00
