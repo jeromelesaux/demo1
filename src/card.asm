@@ -1,13 +1,13 @@
  org #9000
  nolist
  ; write "card"
- jp main
+ call main
 
 
 LargeurEcran Equ #50
 TableAdr Equ #8000
 Largeur Equ 19 ; Largeur
-Hauteur Equ 100 ; Hauteur
+Hauteur Equ 104 ; Hauteur
 Taille Equ Largeur*Hauteur ; 19*100 = 1900 (#76C)
 
 
@@ -27,8 +27,8 @@ loopcol ld b,(hl) ; recupere couleur dans b
  inc hl ; prochaine couleur
  inc e ; 1 couleur de moins
  bit 4,e ; teste si 16eme couleur
- ret nz ; on est arrive
- jr loopcol ; sinon on continue
+ jr z,loopcol ; on est arrive
+ ret ; sinon on continue
 
 palette 
  DB 0,26,9,13
@@ -179,11 +179,10 @@ Pile dw 0
 
 main 
  call setpalette
- jp rolling
+ call rolling
 ret
 
 sprite 
- DB #00, #00, #00, #00, #00, #00, #00, #00
  DB #00, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #80, #40, #00, #00, #00, #00
@@ -421,7 +420,16 @@ sprite
  DB #00, #00, #00, #00, #00, #00, #40, #40
  DB #00, #00, #C0, #C0, #C0, #C0, #C0, #C0
  DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
- DB #C0, #C0, #C0, #80, #C0
+ DB #C0, #C0, #C0, #80, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
+ DB #C0, #C0, #C0, #C0, #C0, #C0, #C0, #C0
 endspr
 
 TableX DB 15,15,15,15,15,15,15,15
