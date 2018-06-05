@@ -25,10 +25,23 @@ package:
 	#$(PKG) demo_src.dsk -i src/demo.asm -t 0 -e C0000 -c 4000
 
 anim:
-	$(PKG) hypto_src.dsk -n
-	$(PKG) hypto_src.dsk -i src/hypto.asm -t 1
-	$(foreach s,$(shell ls hypto/*.scr), $(PKG) hypto_src.dsk -i $(s) -t 1 -e C0000 -c 4000;)
-	javacpc "$(PWD)/hypto_src.dsk"
+	$(PKG) tunnel_src.dsk -n
+	$(PKG) tunnel_src.dsk -i src/tunnel.asm -t 1
+	$(foreach s,$(shell ls tunnel/*.scr), $(PKG) tunnel_src.dsk -i $(s) -t 1 -e C0000 -c 4000;)
+	javacpc "$(PWD)/tunnel_src.dsk"
+
+
+anim2:
+	$(PKG) whole_src.dsk -n
+	$(PKG) whole_src.dsk -i src/whole.asm -t 1
+	$(foreach s,$(shell ls whole/*.scr), $(PKG) whole_src.dsk -i $(s) -t 1 -e C0000 -c 4000;)
+	javacpc "$(PWD)/whole_src.dsk"
+
+anim3:
+	$(PKG) ball_src.dsk -n
+	$(PKG) ball_src.dsk -i src/ball.asm -t 1
+	$(foreach s,$(shell ls ball/*.scr), $(PKG) ball_src.dsk -i $(s) -t 1 -e C0000 -c 4000;)
+	javacpc "$(PWD)/ball_src.dsk"
 
 poker:
 	$(PKG) card_src.dsk -n
@@ -47,6 +60,8 @@ start:
 	$(PKG) joker_src.dsk -n
 	$(PKG) joker_src.dsk -i joker/joker.scr -t 1 -e c000 -c 4000
 	javacpc "$(PWD)/joker_src.dsk"
+
+
 
 emulator:
 	javacpc "$(PWD)/demo_src.dsk"
