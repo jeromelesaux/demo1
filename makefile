@@ -51,9 +51,9 @@ poker:
 	$(PKG) card_src.dsk -i card/card.scr -t 1 -e c000 -c 4000
 	javacpc "$(PWD)/card_src.dsk"
 
-end:
+zoom:
 	$(PKG) harley_src.dsk -n
-	$(PKG) harley_src.dsk -i harley/harley.scr -t 1 -e c000 -c 4000
+	$(PKG) harley_src.dsk -i src/harley.asm -t 0
 	javacpc "$(PWD)/harley_src.dsk"
 
 start:
@@ -61,6 +61,10 @@ start:
 	$(PKG) joker_src.dsk -i joker/joker.scr -t 1 -e c000 -c 4000
 	javacpc "$(PWD)/joker_src.dsk"
 
+scroll:
+	$(PKG) scroll_scr.dsk -n 
+	$(PKG) scroll_scr.dsk -i src/scroll.asm  -t 0
+	javacpc "$(PWD)/scroll_scr.dsk"
 
 
 emulator:

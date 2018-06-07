@@ -1,6 +1,5 @@
   org #a000
   nolist
-	write "whole"
 	jp main ; main function 
 
 ; set color and mode screen
@@ -134,3 +133,5 @@ finwhole3
 whole4: 
   db "whole4.scr"
 finwhole4
+
+save 'wh.bin',#a000,1024,DSK,'fichiertest.dsk'
