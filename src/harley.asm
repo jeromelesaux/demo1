@@ -8,8 +8,36 @@
  ld a,0
  call #bc0e ; set mode 0 
 
+;
+; Initialisations
+;
+ 
+	di		; On coupe les interruptions
+	ld hl,(&38)	; On lit l'ancienne interruption
+	ld (Inter+1),hl	; et on la sauve.
+	ld hl,&c9fb	; On remplace tout ça par
+	ld (&38),hl	; du neuf (EI,RET)
+	ei		; On remet les interruptions
+ 
+; Formatage de l'écran
+ 
+	ld bc,&bc00+3	; On met la valeur 8 dans
+	out (c),c	; le registre 3 du CRTC
+	ld bc,&bd00+8	; afin de rester compatible
+	out (c),c	; avec les CRTC type 2
+	ld bc,&bc00+2	; pour lesquels la valeur
+	out (c),c	; 50 est autrement impossible
+	ld bc,&bd00+50	; à mettre dans le registre 2
+	out (c),c	; On met ensuite le registre 1
+	ld bc,&bc00+1	; à la valeur 48 ce qui
+	out (c),c	; nous fait un écran de
+	ld bc,&bd00+48	; 96 octets de large,
+	out (c),c	; un overscan complet quoi !
+ 
+
 setharleypalette ; set color palette
- ld bc,#00
+ ld b,26
+ ld c,b
  call #bc38 ; set border to black
  ld a,0
  call #bc0e ; set mode 0 
@@ -54,10 +82,16 @@ loopcol ld b,(hl) ; recupere couleur dans b
  Add a,8 ; on ajoute 8 pour passer à la ligne suivante
  Ld h,a ; on met la nouvelle valeur dans h
  Ret nc ; on arrete ici s'il n'y a pas de depassement
- Ld bc,#c050 ; pour un ecran de 80 caracteres
- Add hl,bc ; s'il y a depassement on additionne #c050 a l'adresse.
+ Ld bc,#c060 ; pour un ecran de 80 caracteres
+ Add hl,bc ; s'il y a depassement on additionne #c060 a l'adresse.
  Res 3,h ; pour eviter le depassement de la zone et faire une Raz de l'adresse ecran
  Ret
+
+ 	di		; On coupe tout !
+Inter	ld hl,0		; On remet le vieux
+	ld (&38),hl	; modèle et on
+	ei		; remet en marche !
+	ret		; Heu...
 
  harleypalette 
  DB 26,0,13,10
