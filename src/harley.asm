@@ -33,7 +33,16 @@
 	out (c),c	; nous fait un écran de
 	ld bc,&bd00+48	; 96 octets de large,
 	out (c),c	; un overscan complet quoi !
- 
+  ld bc,&bc0c ; registre 12
+ out (c),c
+ ld a, &30+&0c
+ inc b ; passe en bd00
+ out (c),a
+ ld bc,&bc0d ; registre 13 
+ ld a,0
+ out (c),c
+ inc b ; pass en bd00
+ out (c),a
 
 setharleypalette ; set color palette
  ld b,26

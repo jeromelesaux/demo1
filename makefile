@@ -66,6 +66,10 @@ scroll:
 	$(PKG) scroll_scr.dsk -i src/scroll.asm  -t 0
 	javacpc "$(PWD)/scroll_scr.dsk"
 
+title:
+	$(PKG) intro_scr.dsk -n 
+	$(PKG) intro_scr.dsk -i src/intro.asm  -t 0
+	javacpc "$(PWD)/intro_scr.dsk"
 
 emulator:
 	javacpc "$(PWD)/demo_src.dsk"
